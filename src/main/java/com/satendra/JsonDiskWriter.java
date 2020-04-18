@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,9 +13,9 @@ public class JsonDiskWriter {
 
     private final JsonNode jsonString;
 
-    private  String outFileName;
+    private final String outFileName;
 
-    private String fileExtention;
+    private final String fileExtention;
 
     final ObjectWriter objectWriter;
 
@@ -29,8 +28,10 @@ public class JsonDiskWriter {
     }
 
     public void Write() throws IOException {
-        objectWriter.writeValue(new File(outFileName+"."+fileExtention), jsonString);
-        System.out.println("File created.....................  " + outFileName);
+
+        String fileName = outFileName+"."+fileExtention;
+        objectWriter.writeValue(new File(fileName), jsonString);
+        System.out.println("Output file name .....................  :" + fileName);
     }
 
 

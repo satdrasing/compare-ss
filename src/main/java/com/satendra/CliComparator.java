@@ -30,6 +30,7 @@ public class CliComparator {
 
     public void readFile(String createdbsddid, String copiedBsddid) throws IOException {
         createdStreamSupplier = () -> Files.newInputStream(Paths.get(createdbsddid));
+        System.out.println("Input file name.....................  :" + Paths.get(createdbsddid).getFileName());
         inputFileExtention = extractFileExtention(createdbsddid);
 
         this.copiedBsddid =copiedBsddid;
@@ -42,6 +43,7 @@ public class CliComparator {
     public void writeFile(String copiedBsddid) throws IOException {
         JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(elementReplace.replacedJsonTree, copiedBsddid,inputFileExtention);
         jsonDiskWriter.Write();
+        createdStreamSupplier.get().close();
     }
 
      private String extractFileExtention(String fullFileName){
