@@ -46,7 +46,6 @@ public class ElementReplace {
             System.out.println(diff.toPrettyString());
         }catch (JsonParseException exception){
             System.err.println("Error: Parsing input file failed. "+exception.getMessage());
-            System.out.println("Info: Output file creation aborted.");
             System.exit(1);
         }
     }
