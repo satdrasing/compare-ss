@@ -20,6 +20,10 @@ public class ElementReplace {
 
     private final String coppiedId;
 
+    JsonNode originalJsonTree ;
+
+    JsonNode replacedJsonTree;
+
     private final InputStreamSupplier createdStreamSupplier;
 
     public ElementReplace(InputStreamSupplier createdStreamSupplier, String coppiedId) {
@@ -30,15 +34,16 @@ public class ElementReplace {
 
     public void readJsonTree() throws IOException {
 
-        JsonNode originalJsonTree = mapper.readTree(createdStreamSupplier.get());
+         originalJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-        JsonNode replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
+         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
         change(replacedJsonTree, BSSDID, coppiedId);
         change(replacedJsonTree, PERSONEN_ID, coppiedId);
         change(replacedJsonTree, KASSENZEICHEN, coppiedId);
-        JsonWriter jsonWriter = new JsonWriter(replacedJsonTree, coppiedId);
-        jsonWriter.Write();
+
+        //JsonDiskWriter jsonWriter = new JsonDiskWriter(replacedJsonTree, coppiedId);
+        //jsonWriter.Write();
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
         System.out.println(diff.toPrettyString());
     }
