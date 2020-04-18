@@ -26,7 +26,6 @@ public class CliArguments {
         options.addOption(buildHelpOption());
 
         process(args);
-
     }
 
     private Option buildHelpOption() {
