@@ -1,5 +1,6 @@
 package com.satendra;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,10 +12,9 @@ import java.io.IOException;
 public class ElementReplace {
 
     public static final String BSSDID = "bsddid";
-
     public static final String PERSONEN_ID = "personenID";
-
     public static final String KASSENZEICHEN = "kassenzeichen";
+
 
     private final ObjectMapper mapper;
 
@@ -33,19 +33,22 @@ public class ElementReplace {
     }
 
     public void readJsonTree() throws IOException {
+        try {
+            originalJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-         originalJsonTree = mapper.readTree(createdStreamSupplier.get());
+            replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
+            change(replacedJsonTree, BSSDID, coppiedId);
+            change(replacedJsonTree, PERSONEN_ID, coppiedId);
+            change(replacedJsonTree, KASSENZEICHEN, coppiedId);
 
-        change(replacedJsonTree, BSSDID, coppiedId);
-        change(replacedJsonTree, PERSONEN_ID, coppiedId);
-        change(replacedJsonTree, KASSENZEICHEN, coppiedId);
-
-        //JsonDiskWriter jsonWriter = new JsonDiskWriter(replacedJsonTree, coppiedId);
-        //jsonWriter.Write();
-        JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
-        System.out.println(diff.toPrettyString());
+            JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
+            System.out.println(diff.toPrettyString());
+        }catch (JsonParseException exception){
+            System.err.println("Error: Parsing input file failed. "+exception.getMessage());
+            System.out.println("Info: Output file creation aborted.");
+            System.exit(1);
+        }
     }
 
     private void change(JsonNode parent, String fieldName, String newValue) {

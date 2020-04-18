@@ -1,5 +1,6 @@
 package com.satendra;
 
+import com.satendra.exception.CliArgumentsParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

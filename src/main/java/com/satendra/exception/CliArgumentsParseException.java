@@ -1,4 +1,4 @@
-package com.satendra;
+package com.satendra.exception;
 
 public class CliArgumentsParseException extends RuntimeException {
     public CliArgumentsParseException(Exception cause) {
