@@ -5,6 +5,5 @@ import java.io.InputStream;
 
 @FunctionalInterface
 public interface InputStreamSupplier {
-
     InputStream get() throws IOException;
 }

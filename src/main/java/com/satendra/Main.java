@@ -13,8 +13,7 @@ public class Main {
             System.exit(startCLI(cliArguments));
         } else if (cliArguments.isHelp()) {
             cliArguments.printHelp();
-        }
-        else {
+        } else {
             cliArguments.printHelp();
         }
     }

@@ -1,16 +1,13 @@
 package com.satendra;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import com.github.fge.jsonpatch.diff.JsonDiff;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -23,14 +20,14 @@ public class ElementReplace {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    //private final String coppiedId;
 
-    JsonNode originalJsonTree;
+    private JsonNode originalJsonTree;
 
-    JsonNode replacedJsonTree;
+    private JsonNode replacedJsonTree;
 
-    private String inputFileExtention;
-    private String copiedBsddid;
+    final private String inputFileExtention;
+
+    final private String copiedBsddid;
 
     private final InputStreamSupplier createdStreamSupplier;
 

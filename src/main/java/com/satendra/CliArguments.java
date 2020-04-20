@@ -23,7 +23,7 @@ public class CliArguments {
     private static final String HELP_LONG_OPTION = "help";
 
     private static final String OUTPUT_OPTION = "o";
-    private static final String OUTPUT_LONG_OPTION="output";
+    private static final String OUTPUT_LONG_OPTION = "output";
 
     public CliArguments(String[] args) {
         options = new Options();
@@ -44,14 +44,14 @@ public class CliArguments {
                 .build();
     }
 
-    public Optional<String> getOutputFile(){
-        if(commandLine.hasOption(OUTPUT_OPTION)){
+    public Optional<String> getOutputFile() {
+        if (commandLine.hasOption(OUTPUT_OPTION)) {
             return Optional.empty();
         }
         return Optional.of(commandLine.getOptionValue(OUTPUT_OPTION));
     }
 
-    private Option buildOutputOption(){
+    private Option buildOutputOption() {
         return Option.builder(OUTPUT_OPTION)
                 .argName("output")
                 .desc("provide an option for output file for the result")
