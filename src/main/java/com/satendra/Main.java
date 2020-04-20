@@ -6,9 +6,9 @@ import com.satendra.exception.CliArgumentsParseException;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
 
-        System.out.println(".............MoeVe...............  ");
+        //System.out.println("MoeVe");
 
         try {
             final CliArguments cliArguments = new CliArguments(args);
@@ -19,7 +19,7 @@ public class Main {
             } else {
                 cliArguments.printHelp();
             }
-        }catch (CliArgumentsParseException e){
+        }catch (CliArgumentsParseException | IOException e){
             System.err.println(e.getMessage());
         }
     }

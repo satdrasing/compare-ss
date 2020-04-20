@@ -31,7 +31,7 @@ public class ElementReplace {
 
     private final InputStreamSupplier createdStreamSupplier;
 
-    public ElementReplace(String createdbsddid, String copiedBsddid) throws IOException {
+    public ElementReplace(String createdbsddid, String copiedBsddid) {
         Objects.requireNonNull(createdbsddid, "created id is null");
         Objects.requireNonNull(copiedBsddid, "copied id is null");
 

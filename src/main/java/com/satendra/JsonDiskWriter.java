@@ -38,13 +38,13 @@ public class JsonDiskWriter {
 
         String fileName = outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
-        System.out.println("Output file name .....................  :" + fileName);
+        System.out.println(fileName);
     }
 
     public void writeToLocation() throws IOException {
 
         String fileName = directoryPath + "/" + outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
-        System.out.println("Output file name .....................  :" + fileName);
+        System.out.println(fileName);
     }
 }
