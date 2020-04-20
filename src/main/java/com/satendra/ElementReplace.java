@@ -33,7 +33,7 @@ public class ElementReplace {
     }
 
     public void readJsonTree() throws IOException {
-        try {
+
             originalJsonTree = mapper.readTree(createdStreamSupplier.get());
 
             replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
@@ -44,10 +44,6 @@ public class ElementReplace {
 
             JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
             System.out.println(diff.toPrettyString());
-        }catch (JsonParseException exception){
-            System.err.println("Error: Parsing input file failed. "+exception.getMessage());
-            System.exit(1);
-        }
     }
 
     private void change(JsonNode parent, String fieldName, String newValue) {
