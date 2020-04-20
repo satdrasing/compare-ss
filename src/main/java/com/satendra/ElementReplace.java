@@ -69,6 +69,9 @@ public class ElementReplace {
         createdStreamSupplier.get().close();
     }
 
+    public boolean writeTo(String directoryPath){
+        return false;
+    }
     private String extractFileExtention(String fullFileName) {
         return FilenameUtils.getExtension(fullFileName);
     }

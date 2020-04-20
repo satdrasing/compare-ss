@@ -27,6 +27,7 @@ public class CliArguments {
 
     public CliArguments(String[] args) {
         options = new Options();
+        options.addOption(buildOutputOption());
         options.addOption(buildHelpOption());
 
         process(args);
@@ -45,7 +46,7 @@ public class CliArguments {
     }
 
     public Optional<String> getOutputFile() {
-        if (commandLine.hasOption(OUTPUT_OPTION)) {
+        if (!commandLine.hasOption(OUTPUT_OPTION)) {
             return Optional.empty();
         }
         return Optional.of(commandLine.getOptionValue(OUTPUT_OPTION));

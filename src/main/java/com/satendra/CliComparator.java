@@ -16,7 +16,11 @@ public class CliComparator {
 
         if (cliArguments.getCreatedBsddId().isPresent() && cliArguments.getCopiedBsddId().isPresent()) {
             result = compare(cliArguments.getCreatedBsddId().get(), cliArguments.getCopiedBsddId().get());
-
+            if (cliArguments.getOutputFile().isPresent()) {
+                elementReplace.writeTo(cliArguments.getOutputFile().get());
+            } else {
+                elementReplace.writeFile();
+            }
         }
     }
 
@@ -24,13 +28,14 @@ public class CliComparator {
         try {
             elementReplace = new ElementReplace(createdbsddid, copiedBsddid);
             elementReplace.readJsonTree();
-            elementReplace.writeFile();
+
             return SUCESS_RESULT_VALUE;
         } catch (Exception e) {
             System.err.println("Error" + e.getMessage());
             return ERROR_RESULT_VALUE;
         }
     }
+
 
     public int getResult() {
         return result;

@@ -1,6 +1,8 @@
 package com.satendra;
 
 
+import com.satendra.exception.CliArgumentsParseException;
+
 import java.io.IOException;
 
 public class Main {
@@ -8,13 +10,17 @@ public class Main {
 
         System.out.println(".............MoeVe...............  ");
 
-        final CliArguments cliArguments = new CliArguments(args);
-        if (cliArguments.areAvailable()) {
-            System.exit(startCLI(cliArguments));
-        } else if (cliArguments.isHelp()) {
-            cliArguments.printHelp();
-        } else {
-            cliArguments.printHelp();
+        try {
+            final CliArguments cliArguments = new CliArguments(args);
+            if (cliArguments.areAvailable()) {
+                System.exit(startCLI(cliArguments));
+            } else if (cliArguments.isHelp()) {
+                cliArguments.printHelp();
+            } else {
+                cliArguments.printHelp();
+            }
+        }catch (CliArgumentsParseException e){
+            System.err.println(e.getMessage());
         }
     }
 
