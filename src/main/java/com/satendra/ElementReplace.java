@@ -63,15 +63,20 @@ public class ElementReplace {
         }
     }
 
-    public void writeFile() throws IOException {
+    public boolean writeFile() throws IOException {
         JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(replacedJsonTree, copiedBsddid, inputFileExtention);
-        jsonDiskWriter.Write();
+        jsonDiskWriter.write();
         createdStreamSupplier.get().close();
+        return true;
     }
 
-    public boolean writeTo(String directoryPath){
-        return false;
+    public boolean writeTo(String directoryPath) throws IOException {
+        JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(replacedJsonTree, copiedBsddid, inputFileExtention, directoryPath);
+        jsonDiskWriter.writeToLocation();
+        createdStreamSupplier.get().close();
+        return true;
     }
+
     private String extractFileExtention(String fullFileName) {
         return FilenameUtils.getExtension(fullFileName);
     }

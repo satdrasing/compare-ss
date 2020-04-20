@@ -19,6 +19,8 @@ public class JsonDiskWriter {
 
     final ObjectWriter objectWriter;
 
+    private String directoryPath;
+
     public JsonDiskWriter(JsonNode jsonString, String outFileName, String fileExtension) {
         this.jsonString = jsonString;
         this.outFileName = outFileName;
@@ -27,12 +29,22 @@ public class JsonDiskWriter {
 
     }
 
-    public void Write() throws IOException {
+    public JsonDiskWriter(JsonNode jsonString, String outFileName, String fileExtension, String directoryPath) {
+        this(jsonString, outFileName, fileExtension);
+        this.directoryPath = directoryPath;
+    }
+
+    public void write() throws IOException {
 
         String fileName = outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
         System.out.println("Output file name .....................  :" + fileName);
     }
 
+    public void writeToLocation() throws IOException {
 
+        String fileName = directoryPath + "/" + outFileName + "." + fileExtension;
+        objectWriter.writeValue(new File(fileName), jsonString);
+        System.out.println("Output file name .....................  :" + fileName);
+    }
 }
