@@ -53,6 +53,7 @@ public class CliArguments {
     }
 
     private Option buildOutputOption() {
+
         return Option.builder(OUTPUT_OPTION)
                 .argName("output")
                 .desc("provide an option for output file for the result")

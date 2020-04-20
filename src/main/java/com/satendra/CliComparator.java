@@ -7,7 +7,7 @@ public class CliComparator {
 
     private int result;
 
-    ElementReplace elementReplace;
+    private ElementReplace elementReplace;
 
     public static final int SUCCESS_RESULT_VALUE = 0;
     public static final int ERROR_RESULT_VALUE = 1;
@@ -21,6 +21,7 @@ public class CliComparator {
     }
 
     private void writeJsonDisK(CliArguments cliArguments) throws IOException {
+
         if(result ==SUCCESS_RESULT_VALUE){
             if (cliArguments.getOutputFile().isPresent()) {
                 elementReplace.writeTo(cliArguments.getOutputFile().get());
@@ -31,6 +32,7 @@ public class CliComparator {
     }
 
     private int compare(String createdbsddid, String copiedBsddid) {
+
         try {
             elementReplace = new ElementReplace(createdbsddid, copiedBsddid);
             elementReplace.readJsonTree();
@@ -41,7 +43,6 @@ public class CliComparator {
             return ERROR_RESULT_VALUE;
         }
     }
-
 
     public int getResult() {
         return result;

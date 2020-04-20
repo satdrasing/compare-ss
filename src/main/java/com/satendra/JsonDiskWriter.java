@@ -26,7 +26,6 @@ public class JsonDiskWriter {
         this.outFileName = outFileName;
         this.fileExtension = fileExtension;
         this.objectWriter = new ObjectMapper().writer(new DefaultPrettyPrinter());
-
     }
 
     public JsonDiskWriter(JsonNode jsonString, String outFileName, String fileExtension, String directoryPath) {
@@ -35,16 +34,16 @@ public class JsonDiskWriter {
     }
 
     public void write() throws IOException {
-
         String fileName = outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
+
         System.out.println(fileName);
     }
 
     public void writeToLocation() throws IOException {
-
         String fileName = directoryPath + "/" + outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
+
         System.out.println(fileName);
     }
 }
