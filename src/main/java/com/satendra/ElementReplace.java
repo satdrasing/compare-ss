@@ -6,8 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.github.fge.jsonpatch.diff.JsonDiff;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 public class ElementReplace {
 
@@ -16,34 +21,40 @@ public class ElementReplace {
     public static final String KASSENZEICHEN = "kassenzeichen";
 
 
-    private final ObjectMapper mapper;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    private final String coppiedId;
+    //private final String coppiedId;
 
-    JsonNode originalJsonTree ;
+    JsonNode originalJsonTree;
 
     JsonNode replacedJsonTree;
 
+    private String inputFileExtention;
+    private String copiedBsddid;
+
     private final InputStreamSupplier createdStreamSupplier;
 
-    public ElementReplace(InputStreamSupplier createdStreamSupplier, String coppiedId) {
-        this.createdStreamSupplier = createdStreamSupplier;
-        this.coppiedId = coppiedId;
-        mapper = new ObjectMapper();
+    public ElementReplace(String createdbsddid, String copiedBsddid) throws IOException {
+        Objects.requireNonNull(createdbsddid, "created id is null");
+        Objects.requireNonNull(copiedBsddid, "copied id is null");
+
+        this.createdStreamSupplier = () -> Files.newInputStream(Paths.get(createdbsddid));
+        this.inputFileExtention = extractFileExtention(createdbsddid);
+        this.copiedBsddid = copiedBsddid;
     }
 
     public void readJsonTree() throws IOException {
 
-            originalJsonTree = mapper.readTree(createdStreamSupplier.get());
+        originalJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-            replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
+        replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-            change(replacedJsonTree, BSSDID, coppiedId);
-            change(replacedJsonTree, PERSONEN_ID, coppiedId);
-            change(replacedJsonTree, KASSENZEICHEN, coppiedId);
+        change(replacedJsonTree, BSSDID, copiedBsddid);
+        change(replacedJsonTree, PERSONEN_ID, copiedBsddid);
+        change(replacedJsonTree, KASSENZEICHEN, copiedBsddid);
 
-            JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
-            System.out.println(diff.toPrettyString());
+        JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
+        System.out.println(diff.toPrettyString());
     }
 
     private void change(JsonNode parent, String fieldName, String newValue) {
@@ -54,4 +65,15 @@ public class ElementReplace {
             change(child, fieldName, newValue);
         }
     }
+
+    public void writeFile() throws IOException {
+        JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(replacedJsonTree, copiedBsddid, inputFileExtention);
+        jsonDiskWriter.Write();
+        createdStreamSupplier.get().close();
+    }
+
+    private String extractFileExtention(String fullFileName) {
+        return FilenameUtils.getExtension(fullFileName);
+    }
+
 }

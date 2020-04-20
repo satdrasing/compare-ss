@@ -15,26 +15,24 @@ public class JsonDiskWriter {
 
     private final String outFileName;
 
-    private final String fileExtention;
+    private final String fileExtension;
 
     final ObjectWriter objectWriter;
 
-    public JsonDiskWriter(JsonNode jsonString, String outFileName, String fileExtention) {
+    public JsonDiskWriter(JsonNode jsonString, String outFileName, String fileExtension) {
         this.jsonString = jsonString;
         this.outFileName = outFileName;
-        this.fileExtention =fileExtention;
+        this.fileExtension = fileExtension;
         this.objectWriter = new ObjectMapper().writer(new DefaultPrettyPrinter());
 
     }
 
     public void Write() throws IOException {
 
-        String fileName = outFileName+"."+fileExtention;
+        String fileName = outFileName + "." + fileExtension;
         objectWriter.writeValue(new File(fileName), jsonString);
         System.out.println("Output file name .....................  :" + fileName);
     }
-
-
 
 
 }

@@ -10,45 +10,33 @@ import java.nio.file.Paths;
 public class CliComparator {
 
     private int result;
-
-    private InputStreamSupplier createdStreamSupplier;
-
-    private  String inputFileExtention;
-
-    private String copiedBsddid;
-
+    
     ElementReplace elementReplace;
+
+    public static final int SUCESS_RESULT_VALUE = 0;
+    public static final int ERROR_RESULT_VALUE = 1;
 
     public CliComparator(CliArguments cliArguments) throws IOException {
 
         if (cliArguments.getCreatedBsddId().isPresent() && cliArguments.getCopiedBsddId().isPresent()) {
-            readFile(cliArguments.getCreatedBsddId().get(), cliArguments.getCopiedBsddId().get());
-            //writeFile
-            writeFile(copiedBsddid);
+            result = compare(cliArguments.getCreatedBsddId().get(), cliArguments.getCopiedBsddId().get());
+
         }
     }
 
-    public void readFile(String createdbsddid, String copiedBsddid) throws IOException {
-        createdStreamSupplier = () -> Files.newInputStream(Paths.get(createdbsddid));
-        System.out.println("Input file name.....................  :" + Paths.get(createdbsddid).getFileName());
-        inputFileExtention = extractFileExtention(createdbsddid);
+    private int compare(String createdbsddid, String copiedBsddid) {
 
-        this.copiedBsddid =copiedBsddid;
-
-         elementReplace = new ElementReplace(createdStreamSupplier, copiedBsddid);
-
-        elementReplace.readJsonTree();
+        try {
+            elementReplace = new ElementReplace(createdbsddid, copiedBsddid);
+            elementReplace.readJsonTree();
+            elementReplace.writeFile();
+            return SUCESS_RESULT_VALUE;
+        } catch (Exception e) {
+            System.err.println("Error"+e.getMessage());
+            return ERROR_RESULT_VALUE;
+        }
     }
 
-    public void writeFile(String copiedBsddid) throws IOException {
-        JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(elementReplace.replacedJsonTree, copiedBsddid,inputFileExtention);
-        jsonDiskWriter.Write();
-        createdStreamSupplier.get().close();
-    }
-
-     private String extractFileExtention(String fullFileName){
-        return FilenameUtils.getExtension(fullFileName);
-    }
     public int getResult() {
         return result;
     }
