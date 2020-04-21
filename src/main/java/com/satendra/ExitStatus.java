@@ -8,10 +8,10 @@ public enum ExitStatus {
 
     private final int exitCode;
 
-    private ExitStatus(int exitCode) {
+    ExitStatus(int exitCode) {
         this.exitCode = exitCode;
     }
-    
+
     public int getExitCode() {
         return exitCode;
     }
