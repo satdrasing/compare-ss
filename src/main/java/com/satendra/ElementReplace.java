@@ -9,13 +9,14 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ElementReplace {
-
-    public static final String BSSDID = "bsddid";
-    public static final String PERSONEN_ID = "personenID";
-    public static final String KASSENZEICHEN = "kassenzeichen";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -40,9 +41,9 @@ public class ElementReplace {
         JsonNode originalJsonTree = mapper.readTree(createdStreamSupplier.get());
         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-        change(replacedJsonTree, BSSDID, copiedBsddid);
-        change(replacedJsonTree, PERSONEN_ID, copiedBsddid);
-        change(replacedJsonTree, KASSENZEICHEN, copiedBsddid);
+        Stream.of(SearchId.values()).map(Enum::toString)
+                .collect(Collectors.toList())
+                .forEach(ids -> change(replacedJsonTree, ids, copiedBsddid));
 
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
 
@@ -60,7 +61,7 @@ public class ElementReplace {
         }
     }
 
-    public void  writeFile() throws IOException {
+    public void writeFile() throws IOException {
         JsonDiskWriter jsonDiskWriter = new JsonDiskWriter(replacedJsonTree, copiedBsddid, inputFileExtension);
         jsonDiskWriter.write();
         createdStreamSupplier.get().close();

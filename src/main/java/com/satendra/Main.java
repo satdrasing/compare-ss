@@ -11,7 +11,7 @@ public class Main {
         try {
             final CliArguments cliArguments = new CliArguments(args);
             if (cliArguments.areAvailable()) {
-                System.exit(startCLI(cliArguments));
+                System.exit(startCLI(cliArguments).getExitCode());
             } else if (cliArguments.isHelp()) {
                 cliArguments.printHelp();
             } else {
@@ -22,7 +22,7 @@ public class Main {
         }
     }
 
-    private static int startCLI(CliArguments cliArguments) throws IOException {
+    private static ExitStatus startCLI(CliArguments cliArguments) throws IOException {
         return new CliComparator(cliArguments).getResult();
     }
 }
