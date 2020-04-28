@@ -9,6 +9,8 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,11 +19,15 @@ public class ElementReplace {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    Map<String, String> replaceValue = new HashMap<>();
+
     private JsonNode replacedJsonTree;
 
     final private String inputFileExtension;
 
     final private String copiedBsddid;
+
+    private static final String EMPTY_STRING = "";
 
     private final InputStreamSupplier createdStreamSupplier;
 
@@ -38,9 +44,9 @@ public class ElementReplace {
         JsonNode originalJsonTree = mapper.readTree(createdStreamSupplier.get());
         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-        Stream.of(SearchId.values()).map(Enum::toString)
-                .collect(Collectors.toList())
-                .forEach(ids -> change(replacedJsonTree, ids, copiedBsddid));
+        Stream.of(SearchId.values()).map(Enum::toString).forEach(this::filedReplace);
+
+        replaceValue.entrySet().forEach(f -> change(replacedJsonTree, f.getKey(), f.getValue()));
 
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
 
@@ -73,5 +79,14 @@ public class ElementReplace {
 
     private String extractFileExtension(String fullFileName) {
         return FilenameUtils.getExtension(fullFileName);
+    }
+
+
+    private void filedReplace(String ids) {
+        if (ids.equals(SearchId.KASSENZEICHEN.toString())) {
+            replaceValue.put(ids, EMPTY_STRING);
+        } else {
+            replaceValue.put(ids, copiedBsddid);
+        }
     }
 }

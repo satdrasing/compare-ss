@@ -2,9 +2,9 @@ package com.satendra;
 
 public enum SearchId {
 
-    BSSDID("bsddid"),
+   BSSDID("bsddid"),
 
-    PERSONEN_ID("personenID"),
+   PERSONEN_ID("personenID"),
 
     KASSENZEICHEN("kassenzeichen");
 
