@@ -9,8 +9,6 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,9 +40,9 @@ public class ElementReplace {
         JsonNode originalJsonTree = mapper.readTree(createdStreamSupplier.get());
         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-       Stream.of(SearchId.values())
-                .collect(Collectors.toMap(Enum::toString, this::filedReplace)).
-               entrySet().forEach(f -> change(replacedJsonTree, f.getKey(), f.getValue()));
+        Stream.of(SearchId.values())
+                .collect(Collectors.toMap(Enum::toString, this::filedReplace))
+                .entrySet().forEach(element -> change(replacedJsonTree, element.getKey(), element.getValue()));
 
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
 
@@ -80,7 +78,7 @@ public class ElementReplace {
     }
 
 
-   private String filedReplace(SearchId ids) {
-        return  ids.equals(SearchId.KASSENZEICHEN)?EMPTY_STRING:copiedBsddid;
+    private String filedReplace(SearchId ids) {
+        return ids.equals(SearchId.KASSENZEICHEN) ? EMPTY_STRING : copiedBsddid;
     }
 }
