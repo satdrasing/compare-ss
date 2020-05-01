@@ -42,7 +42,7 @@ public class ElementReplace {
 
         Stream.of(SearchId.values())
                 .collect(Collectors.toMap(Enum::toString, this::filedReplace))
-                .entrySet().forEach(element -> change(replacedJsonTree, element.getKey(), element.getValue()));
+                .forEach((key, value) -> change(replacedJsonTree, key, value));
 
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
 
