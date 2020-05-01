@@ -19,8 +19,6 @@ public class ElementReplace {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    Map<String, String> replaceValue = new HashMap<>();
-
     private JsonNode replacedJsonTree;
 
     final private String inputFileExtension;
@@ -44,9 +42,9 @@ public class ElementReplace {
         JsonNode originalJsonTree = mapper.readTree(createdStreamSupplier.get());
         replacedJsonTree = mapper.readTree(createdStreamSupplier.get());
 
-        Stream.of(SearchId.values()).map(Enum::toString).forEach(this::filedReplace);
-
-        replaceValue.entrySet().forEach(f -> change(replacedJsonTree, f.getKey(), f.getValue()));
+       Stream.of(SearchId.values())
+                .collect(Collectors.toMap(Enum::toString, this::filedReplace)).
+               entrySet().forEach(f -> change(replacedJsonTree, f.getKey(), f.getValue()));
 
         JsonNode diff = JsonDiff.asJson(originalJsonTree, replacedJsonTree);
 
@@ -82,11 +80,7 @@ public class ElementReplace {
     }
 
 
-    private void filedReplace(String ids) {
-        if (ids.equals(SearchId.KASSENZEICHEN.toString())) {
-            replaceValue.put(ids, EMPTY_STRING);
-        } else {
-            replaceValue.put(ids, copiedBsddid);
-        }
+   private String filedReplace(SearchId ids) {
+        return  ids.equals(SearchId.KASSENZEICHEN)?EMPTY_STRING:copiedBsddid;
     }
 }
